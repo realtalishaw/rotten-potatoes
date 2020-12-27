@@ -7,7 +7,7 @@ const methodOverride = require('method-override')
 const bodyParser = require('body-parser')
 mongoose.connect('mongodb+srv://root:bPoboyXiVLO1KrrX@cluster0.yelfn.mongodb.net/mongoose?retryWrites=true&w=majority', {
     useUnifiedTopology: true
-}, (err, client) =>
+},(err, client) =>
     {
 	if (err) return console.log(err)
 	console.log('Connected to Database!')
@@ -50,10 +50,14 @@ app.get('/', (req, res) => {
 
 
 // Server Port
-app.listen(3000, () => {
-    console.log('App listening on port 3000!')
+//const port = process.env.PORT || 3000;
+//app.listen(port);
+//console.log("App listening at port" + port);
+var server_port = process.env.PORT || 3000;
+var server_host = process.env.localhost || '0.0.0.0';
+app.listen(server_port, server_host, function() {
+    console.log('Listening on port %d', server_port);
 })
-
 // NEW
 app.get('/reviews/new', (req, res) => {
     res.render('reviews-new', {title: "New Review"});
