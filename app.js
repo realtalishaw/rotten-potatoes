@@ -3,21 +3,26 @@ const express = require('express')
 var exphbs = require('express-handlebars');
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/rotten-potatoes', { useNewUrlParser: true });
+const bodyParser = require('body-parser')
 
 // App setup
 const app = express()
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const Review = mongoose.model('Review', {
     title: String,
-    movieTitle: String,
+    description: String,
+    movieTitle: String
 });
+
+
 
 // Middleware
 
-// Routes
+// INDEX
 app.get('/', (req, res) => {
   Review.find()
     .then(reviews => {
@@ -34,11 +39,22 @@ app.listen(3000, () => {
     console.log('App listening on port 3000!')
 })
 
-// Mock Array of Projects
-//let reviews = [
-  //  { title: "Great Review", movieTitle: "Batman II" },
-    //{ title: "Awesome Movie", movieTitle: "Titanic" },
-   // { title: "Two Thumbs Way, Way, Up!", movieTitle: "Hercules" },
-   // { title: "5 out of 5 highlt recommend", movieTitle: "Little Shop of Horrors"}
-//]
+// NEW
+app.get('/reviews/new', (req, res) => {
+    res.render('reviews-new', {});
+})
+
+// CREATE
+app.post('/reviews', (req, res) => {
+  Review.create(req.body).then((review) => {
+    console.log(review);
+    res.redirect('/');
+  }).catch((err) => {
+    console.log(err.message);
+  })
+})
+
+   
+
+
 
