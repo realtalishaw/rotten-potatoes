@@ -2,15 +2,22 @@
 const express = require('express')
 var exphbs = require('express-handlebars');
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/rotten-potatoes', { useNewUrlParser: true });
+
 const bodyParser = require('body-parser')
+mongoose.connect('mongodb+srv://root:taouNWTramSKtWa1@cluster0.yelfn.mongodb.net/mongoose?retryWrites=true&w=majority', {
+    useUnifiedTopology: true
+}, (err, client) =>
+    {
+	if (err) return console.log(err)
+	console.log('Connected to Database!')
+    })
 
 // App setup
 const app = express()
-
+app.use(bodyParser.urlencoded({ extended: true }));
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
-app.use(bodyParser.urlencoded({ extended: true }));
+
 
 const Review = mongoose.model('Review', {
     title: String,
@@ -23,14 +30,15 @@ const Review = mongoose.model('Review', {
 // Middleware
 
 // INDEX
+
 app.get('/', (req, res) => {
-  Review.find()
-    .then(reviews => {
-      res.render('reviews-index', { reviews: reviews });
-    })
-    .catch(err => {
+    Review.find()
+	.then(reviews => {
+	    console.log(reviews)
+     res.render('reviews-index', { Review: reviews });
+   }).catch(err => {
       console.log(err);
-    })
+   })
 })
 
 
@@ -47,13 +55,21 @@ app.get('/reviews/new', (req, res) => {
 // CREATE
 app.post('/reviews', (req, res) => {
   Review.create(req.body).then((review) => {
-    console.log(review);
+      console.log(review);
     res.redirect('/');
   }).catch((err) => {
     console.log(err.message);
   })
 })
 
+// SHOW
+app.get('/reviews/:id', (req, res) => {
+  Review.findById(req.params.id).then((review) => {
+    res.render('reviews-show', { review: review })
+  }).catch((err) => {
+    console.log(err.message);
+  })
+})
    
 
 
