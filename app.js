@@ -1,13 +1,13 @@
 // Require libraries
 const express = require('express')
 var exphbs = require('express-handlebars');
-var  mongoose = require('mongoose')
+const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 
 const bodyParser = require('body-parser')
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://root:taouNWTramSKtWa1@cluster0.yelfn.mongodb.net/mongoose?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://root:bPoboyXiVLO1KrrX@cluster0.yelfn.mongodb.net/mongoose?retryWrites=true&w=majority', {
     useUnifiedTopology: true
-},{ useNewUrlParser: true }, (err, client) =>
+}, (err, client) =>
     {
 	if (err) return console.log(err)
 	console.log('Connected to Database!')
@@ -50,8 +50,9 @@ app.get('/', (req, res) => {
 
 
 // Server Port
-const port = process.env.PORT || 3000;
-app.listen(port);
+app.listen(3000, () => {
+    console.log('App listening on port 3000!')
+})
 
 // NEW
 app.get('/reviews/new', (req, res) => {
