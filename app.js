@@ -50,9 +50,7 @@ app.get('/', (req, res) => {
 
 
 // Server Port
-//const port = process.env.PORT || 3000;
-//app.listen(port);
-//console.log("App listening at port" + port);
+
 var server_port = process.env.PORT || 3000;
 var server_host = process.env.localhost || '0.0.0.0';
 app.listen(server_port, server_host, function() {
