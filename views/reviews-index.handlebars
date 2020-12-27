@@ -2,8 +2,11 @@
 <h1>Reviews</h1>
 <a href="/reviews/new">New Review</a>
 
-<h2>There Should be Some Reviews what am I missing?</h2>
+<div class="row">
 {{#each reviews}}
+<div class="col-md-3">
 <h2><a href="/reviews/{{this._id}}">{{this.title}}</a></h2>
 <small>{{this.movieTitle}}</small>
+</div>
 {{/each}}
+</div>

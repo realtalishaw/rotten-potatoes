@@ -15,6 +15,7 @@ mongoose.connect('mongodb+srv://root:taouNWTramSKtWa1@cluster0.yelfn.mongodb.net
 
 // App setup
 const app = express()
+module.exports = app;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.engine('handlebars', exphbs({
     defaultLayout: 'main',
