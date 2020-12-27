@@ -2,25 +2,9 @@
 
 <form method="POST" action="/reviews">
 <fieldset>
-<legend>New Review</legend>
 
-<!-- TITLE -->
-<p>
-<label for="title">Title</label><br>
-<input type="text" name="title" />
-</p>
 
-<!-- Movie Title -->
-<label for="movieTitle">Movie Title</label><br>
-<input type="text" name="movieTitle" />
-</p>
-
-<!-- Description -->
-<p>
-<label for="description-text">Description</label><br>
-<textarea id="description-text" name="description" rows="10" /></textarea>
-</p>
-</fieldset>
+{{> reviews-form}}
 
 <!-- BUTTON -->
 <p>
