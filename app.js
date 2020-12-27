@@ -3,7 +3,7 @@ const express = require('express')
 var exphbs = require('express-handlebars');
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
-
+const Comment = require('./models/comments')
 const bodyParser = require('body-parser')
 mongoose.connect('mongodb+srv://root:bPoboyXiVLO1KrrX@cluster0.yelfn.mongodb.net/mongoose?retryWrites=true&w=majority', {
     useUnifiedTopology: true
@@ -73,12 +73,17 @@ app.post('/reviews', (req, res) => {
 
 // SHOW
 app.get('/reviews/:id', (req, res) => {
-  Review.findById(req.params.id).then((review) => {
-    res.render('reviews-show', { review: review })
+    // find review
+    Review.findById(req.params.id).then(review => {
+	//fetch its comments
+	Comment.find({ reviewId: req.params.id }).then(comments => {
+	    // respond with the template with both values
+	    res.render('reviews-show', { review: review, comments: comments })
+	})
   }).catch((err) => {
     console.log(err.message);
-  })
-})
+  });
+});
    
 
 
@@ -110,3 +115,14 @@ app.delete('/reviews/:id', function (req, res) {
 	console.log(err.message);
     })
 })
+
+// COMMENTS
+app.post('/reviews/comments', (req, res) => {
+      Comment.create(req.body).then((comment) => {
+        console.log(comment)
+        res.redirect(`/reviews/${comment.reviewId}`);
+      }).catch((err) => {
+        console.log(err.message);
+      });
+    });
+
