@@ -1,13 +1,13 @@
 // Require libraries
 const express = require('express')
 var exphbs = require('express-handlebars');
-const mongoose = require('mongoose')
+var  mongoose = require('mongoose')
 const methodOverride = require('method-override')
 
 const bodyParser = require('body-parser')
 mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://root:taouNWTramSKtWa1@cluster0.yelfn.mongodb.net/mongoose?retryWrites=true&w=majority', {
     useUnifiedTopology: true
-}, (err, client) =>
+},{ useNewUrlParser: true }, (err, client) =>
     {
 	if (err) return console.log(err)
 	console.log('Connected to Database!')
