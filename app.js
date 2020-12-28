@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 var cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const Schema = mongoose.Schema
 
 // Connect to Database
 mongoose.connect('mongodb+srv://root:bPoboyXiVLO1KrrX@cluster0.yelfn.mongodb.net/mongoose?retryWrites=true&w=majority', {
@@ -36,11 +37,7 @@ app.engine('handlebars', exphbs({
 app.set('view engine', 'handlebars');
 
 
-const Review = mongoose.model('Review', {
-    title: String,
-    description: String,
-    movieTitle: String
-});
+
 
 
 
@@ -99,14 +96,20 @@ app.post("/login", (req, res) => {
     });
 });
 
-
+// REVIEWS
+const Review = mongoose.model('Review', {
+    title: String,
+    description: String,
+    movieTitle: String,
+    author: { type: Schema.Types.ObjectID, ref: "User", required: true }
+});
 
 
 // INDEX
 app.get('/', (req, res) => {
     var currentUser = req.user;
-
-    Review.find({}).lean()
+    console.log(req.cookies);
+    Review.find({}).lean().populate('author')
 	.then(reviews => {
 	    res.render('reviews-index', { reviews: reviews, currentUser });
    }).catch(err => {
@@ -128,23 +131,38 @@ app.get('/reviews/new', (req, res) => {
 })
 
 // CREATE
-app.post('/reviews', (req, res) => {
-  Review.create(req.body).then((review) => {
-      console.log(review);
-    res.redirect(`/reviews/${review._id}`);
-  }).catch((err) => {
-    console.log(err.message);
-  })
-})
+app.post("/reviews/new", (req, res) => { if (req.user) { var reviews = new Review(req.body); reviews.author = req.user._id;
+
+        reviews
+            .save()
+            .then(reviews => {
+                return User.findById(req.user._id);
+            })
+		.then(user => {
+		    console.log(user);
+		    user.reviews.unshift(reviews);
+                user.save();
+                // REDIRECT TO THE NEW POST
+                res.redirect(`/reviews/${reviews._id}`);
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
+    } else {
+        return res.status(401); // UNAUTHORIZED
+    }
+});
 
 // SHOW
 app.get('/reviews/:id', (req, res) => {
+    var currentUser = req.user;
     // find review
-    Review.findById(req.params.id).then(review => {
+    Review.findById(req.params.id).lean().populate('comments').populate('author')
+	.then(review => {
 	//fetch its comments
 	Comment.find({ reviewId: req.params.id }).then(comments => {
 	    // respond with the template with both values
-	    res.render('reviews-show', { review: review, comments: comments })
+	    res.render('reviews-show', { review: review, comments: comments, currentUser })
 	})
   }).catch((err) => {
     console.log(err.message);
