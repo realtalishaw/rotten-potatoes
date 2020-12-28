@@ -1,28 +1,8 @@
 <!-- Navigation Bar -->
 
-<nav class="navbar navbar-default">
-<div class="container-fluid">
-<div class="navbar-header">
-<a class="navbar-brand" href="/">
-Rotten Potatoes
-</a>
-<ul class="nav navbar-nav navbar-right">
-
-{{#if currentUser}}
-  <li><a href="/logout">Logout</a></li>
-{{else}}
-  <li><a href="/login">Login</a></li>
-  <li><a href="/sign-up">Signup</a></li>
-{{/if}}
-
-</ul>
-</div>
-<div class="pull-right">
-
-{{#if currentUser}}
-<a href="/reviews/new" class="btn btn-default navbar-btn">New Review</a>
-{{/if}}
-
-</div>
-</div>
-</nav>
+<div class="sidenav">
+		<a href="/"><img src= "/images/user-account.png">Account</a><hr>
+     <a   href="/">💬 Forum</a><hr>
+     <a href="/">💡 Topics</a><hr>
+     <a href="/logout">Logout</a><hr>
+    </div>

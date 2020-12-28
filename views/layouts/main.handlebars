@@ -7,8 +7,10 @@
 	<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-
-  <div class="container">
+  {{#if currentUser}}
+  {{> navbar}}
+  {{/if}}
+  <div class="main">
     {{{body}}}
     </div>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min/js"></script>
