@@ -158,3 +158,14 @@ app.post('/reviews/comments', (req, res) => {
         return res.status(400).send({ err: err });
       });
   });
+
+// LOG OUT
+app.get('/logout', (req, res) => {
+  res.clearCookie('nToken');
+  res.redirect('/');
+});
+
+// LOGIN FORM
+app.get('/login', (req, res) => {
+  res.render('login');
+});
