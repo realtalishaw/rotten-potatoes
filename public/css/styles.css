@@ -3,7 +3,7 @@ input[type=text], input[type=password] {
   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
-  display: inline-block;
+  display: centered;
   border: none;
   background: #f1f1f1;
   border-radius: 5px;
@@ -33,9 +33,17 @@ button:hover {
 
 /* Add padding to container elements */
 .container {
-  padding: 20px;
+    padding-top: 5%;
+    position: relative;
 } 
 
+.child {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+    
 /* Clear floats */
 .clearfix::after {
   content: "";
