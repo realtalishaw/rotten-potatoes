@@ -57,7 +57,7 @@ button:hover {
 
 
 
-.logo {
+#logo {
   height: 100px;
   width: 100px;
   margin-left: auto;
@@ -118,8 +118,6 @@ h1 {
   content: "✖";
 }
 
-
-/* Fixed Side Nav */
 .sidenav {
   height: 100%;
   width: 160px;
@@ -144,5 +142,13 @@ h1 {
   color: #f1f1f1;
 }
 
+.main {
+  margin-left: 160px; /* Same as the width of the sidenav */
+  font-size: 28px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
 
-
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
