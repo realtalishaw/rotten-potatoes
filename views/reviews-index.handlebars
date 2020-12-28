@@ -1,13 +1,29 @@
 <!-- reviews-index -->
-<h1>Reviews</h1>
-<a href="/reviews/new">New Review</a>
-
 <div class="row">
+{{#if currentUser}}
+{{> navbar}}
+<h1>Reviews</h1>
+
+
 {{#each reviews}}
 <div class="col-md-3">
 <h2><a href="/reviews/{{this._id}}">{{this.title}}</a></h2>
 <small>{{this.movieTitle}}</small>
 <div><small>{{this.author.username}}</small></div>
 </div>
+
+<form class="vote-up" data-id="{{this._id}}">
+<button type="submit">Vote up</buttn>
+</form>
+
+<form class="vote-down" data-id="{{this._id}}">
+<button type="submit">Vote Down</button>
+</form>
 {{/each}}
+{{else}}
+
+	{{> login}}
+	
+{{/if}}
 </div>
+

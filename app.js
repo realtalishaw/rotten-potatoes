@@ -26,7 +26,7 @@ const app = express()
 app.use(cookieParser());
 module.exports = app;
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(express.static('public'));
 app.engine('handlebars', exphbs({
     defaultLayout: 'main',
     runtimeOptions: {
@@ -35,7 +35,6 @@ app.engine('handlebars', exphbs({
     },
 }));
 app.set('view engine', 'handlebars');
-
 
 
 
@@ -101,7 +100,10 @@ const Review = mongoose.model('Review', {
     title: String,
     description: String,
     movieTitle: String,
-    author: { type: Schema.Types.ObjectID, ref: "User", required: true }
+    author: { type: Schema.Types.ObjectID, ref: "User", required: true },
+    upVotes: [{ type: Schema.Types.ObjectId, ref: "User"}],
+    downVotes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    voteScore : {type: Number}
 });
 
 
@@ -131,9 +133,13 @@ app.get('/reviews/new', (req, res) => {
 })
 
 // CREATE
-app.post("/reviews/new", (req, res) => { if (req.user) { var reviews = new Review(req.body); reviews.author = req.user._id;
+app.post("/reviews/new", (req, res) => { if (req.user) {
 
-        reviews
+    var reviews = new Review(req.body);    reviews.author = req.user._id;
+    reviews.upVotes = [];
+    reviews.downVotes = [];
+    reviews.voteScore = 0;
+            reviews
             .save()
             .then(reviews => {
                 return User.findById(req.user._id);
@@ -201,14 +207,29 @@ app.delete('/reviews/:id', function (req, res) {
 })
 
 // COMMENTS
-app.post('/reviews/comments', (req, res) => {
-      Comment.create(req.body).then((comment) => {
-        console.log(comment)
-        res.redirect(`/reviews/${comment.reviewId}`);
-      }).catch((err) => {
-        console.log(err.message);
-      });
-    });
+app.post("/reviews/comments", (req, res) => {
+    if (req.user) { var comments = new Comment(req.body); comments.author = req.user._id;
+
+        comments
+            .save()
+            .then(comments => {
+                return User.findById(req.user._id);
+            })
+		    .then(user => {
+			
+                user.comments.push(comments);
+			user.save();
+			console.log(comments)
+                // REDIRECT TO THE NEW POST
+                res.redirect(`/reviews/${comments._id}`);
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
+    } else {
+        return res.status(401); // UNAUTHORIZED
+    }
+});
 
 
 
@@ -244,3 +265,27 @@ app.get('/logout', (req, res) => {
 });
 
 
+
+// VOTING
+
+app.put("/reviews/:id/vote-up", function(req, res) {
+        var reviews = new Review(req.body);
+    Review.findById(req.params.id).exec(function(err, review) {
+	reviews.upVotes.push(req.user._id);
+	reviews.voteScore = reviews.voteScore + 1;
+	reviews.save();
+
+	res.status(200);
+    });
+});
+
+app.put("/reviews/:id/vote-down", function(req, res) {
+        var reviews = new Review(req.body);
+    Review.findById(req.params.id).exec(function(err, review) {
+	reviews.downVotes.push(req.user._id);
+	reviews.voteScore = reviews.voteScore - 1;
+	reviews.save();
+
+	res.status(200);
+    });
+});

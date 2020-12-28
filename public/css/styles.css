@@ -1,0 +1,74 @@
+/* Full-width input fields */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: #e41c3f;
+  color: white;
+  padding: 14px 20px;
+  margin: 0 auto;
+  cursor: pointer;
+  opacity: 0.9;
+  border-radius: 5px;
+  border: none;
+
+}
+
+button:hover {
+  opacity:1;
+}
+
+/* Add padding to container elements */
+.container {
+  padding: 20px;
+} 
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.clearfix {
+  display: flex;
+  justify-content: center;
+}
+
+
+
+#logo {
+  height: 100px;
+  width: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+h1 {
+  text-align: center;
+}
+
+#info {
+  text-align: center;
+}
+
+.login {
+  height: 50%;
+  margin: 0 auto;
+  border-radius: 5px;
+  width: 50%;
+
+}
