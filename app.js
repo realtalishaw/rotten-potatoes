@@ -47,6 +47,21 @@ const Review = mongoose.model('Review', {
 // Middleware
 app.use(methodOverride('_method'))
 
+// Check Login Status
+var checkAuth = (req, res, next) => {
+  console.log("Checking authentication");
+  if (typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
+    req.user = null;
+  } else {
+    var token = req.cookies.nToken;
+    var decodedToken = jwt.decode(token, { complete: true }) || {};
+    req.user = decodedToken.payload;
+  }
+
+  next();
+};
+app.use(checkAuth);
+
 // LOGIN                                                                               
 app.get('/login', (req, res) => {
   res.render('login');
@@ -84,18 +99,8 @@ app.post("/login", (req, res) => {
     });
 });
 
-// Check Login status
-var checkAuth = (req, res, next) => {
-  console.log("Checking authentication");
-  if (typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
-    req.user = null;
-  } else {
-    var token = req.cookies.nToken;
-    var decodedToken = jwt.decode(token, { complete: true }) || {};
-  }
-  next();
-};
-app.use(checkAuth);
+
+
 
 // INDEX
 app.get('/', (req, res) => {
@@ -103,7 +108,7 @@ app.get('/', (req, res) => {
 
     Review.find({}).lean()
 	.then(reviews => {
-	res.render('reviews-index', { reviews, currentUser });
+	    res.render('reviews-index', { reviews: reviews, currentUser });
    }).catch(err => {
       console.log(err);
    });
