@@ -7,13 +7,18 @@
 Rotten Potatoes
 </a>
 <ul class="nav navbar-nav navbar-right">
+  {{#if currentUser}}
   <li><a href="/logout">Logout</a></li>
+  {{else}}
   <li><a href="/login">Login</a></li>
   <li><a href="/sign-up">Signup</a></li>
+  {{/if}}
 </ul>
 </div>
 <div class="pull-right">
+  {{#if currentUser}}
 <a href="/reviews/new" class="btn btn-default navbar-btn">New Review</a>
+{{/if}}
 </div>
 </div>
 </nav>

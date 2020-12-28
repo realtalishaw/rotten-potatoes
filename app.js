@@ -22,10 +22,10 @@ mongoose.connect('mongodb+srv://root:bPoboyXiVLO1KrrX@cluster0.yelfn.mongodb.net
 
 // App setup
 const app = express()
-
+app.use(cookieParser());
 module.exports = app;
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+
 app.engine('handlebars', exphbs({
     defaultLayout: 'main',
     runtimeOptions: {
@@ -47,15 +47,30 @@ const Review = mongoose.model('Review', {
 // Middleware
 app.use(methodOverride('_method'))
 
+// Check Login status
+var checkAuth = (req, res, next) => {
+  console.log("Checking authentication");
+  if (typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
+    req.user = null;
+  } else {
+    var token = req.cookies.nToken;
+    var decodedToken = jwt.decode(token, { complete: true }) || {};
+  }
+  next();
+};
+app.use(checkAuth);
+
 // INDEX
 app.get('/', (req, res) => {
+    var currentUser = req.user;
+
     Review.find({}).lean()
 	.then(reviews => {
-	res.render('reviews-index', { reviews: reviews });
+	res.render('reviews-index', { reviews, currentUser });
    }).catch(err => {
       console.log(err);
-   })
-})
+   });
+});
 
 
 // Server Port
@@ -142,22 +157,23 @@ app.post('/reviews/comments', (req, res) => {
   app.get('/sign-up', (req, res) => {
     res.render('sign-up');
 })
-  app.post("/sign-up", (req, res) => {
-    // Create User
-    const user = new User(req.body);
 
-    user
-      .save()
-      .then(user => {
-        var token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: "60 days" });
-        res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
-        res.redirect("/");
-      })
-      .catch(err => {
-        console.log(err.message);
-        return res.status(400).send({ err: err });
-      });
-  });
+// SIGN UP POST
+app.post("/sign-up", (req, res) => {
+  // Create User and JWT
+  const user = new User(req.body);
+
+  user
+    .save()
+    .then(user => {
+      var token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: "60 days" });
+      res.redirect("/");
+    })
+    .catch(err => {
+      console.log(err.message);
+      return res.status(400).send({ err: err });
+    });
+});
 
 // LOG OUT
 app.get('/logout', (req, res) => {
@@ -199,3 +215,4 @@ app.post("/login", (req, res) => {
       console.log(err);
     });
 });
+
