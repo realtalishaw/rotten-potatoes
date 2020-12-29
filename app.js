@@ -12,8 +12,8 @@ var cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const Schema = mongoose.Schema
 
-//const CodeTool = require('@editorjs/code');
-// Connect to Database
+
+
 mongoose.connect('mongodb+srv://root:bPoboyXiVLO1KrrX@cluster0.yelfn.mongodb.net/mongoose?retryWrites=true&w=majority', {
     useUnifiedTopology: true
 },(err, client) =>
@@ -121,7 +121,6 @@ const Topic = mongoose.model('Topic', {
 // INDEX
 app.get('/', (req, res) => {
     var currentUser = req.user;
-    console.log(req.cookies);
     Review.find({}).lean().populate('author')
 	.then(reviews => {
 	    res.render('reviews-index', { reviews: reviews, currentUser });
@@ -301,10 +300,7 @@ app.put("/reviews/:id/vote-down", function(req, res) {
     });
 });
 
-// TOPICS                                                                                                                                                                                                   
-app.get('/topics', (req, res) => {
-    res.render('topics');
-});
+// TOPICS                                                                                                                                                                                           
 
 // Members
 app.get('/holbies', (req, res) => {
@@ -317,8 +313,9 @@ app.get('/topics/new', (req, res) => {
 })
 
 app.post("/topics/new", (req, res) => { if (req.user) {
-
-    var topics = new Topic(req.body);    topics.author = req.user._id;
+    
+    var topics = new Topic(req.body);
+    topics.author = req.user._id;
     topics.upVotes = [];
     topics.downVotes = [];
     topics.voteScore = 0;
@@ -328,8 +325,7 @@ app.post("/topics/new", (req, res) => { if (req.user) {
                 return User.findById(req.user._id);
             })
                 .then(user => {
-                    console.log(user);
-                    user.topics.unshift(topics);
+                
                 user.save();
                 // REDIRECT TO THE NEW POST                                                                                                                                                                 
                 res.redirect(`/topics/${topics._id}`);
@@ -342,9 +338,23 @@ app.post("/topics/new", (req, res) => { if (req.user) {
     }
 });
 
-app.get('/account/:username', (req, res) => {
-    const username = req.body.username;
-    User.findOne({ username }, "username");
-    console.log(username);
-    res.render('account', {username: username});
+app.get('/topics', (req, res) => {
+    var currentUser = req.user;
+    Topic.find({}).lean().populate('author')
+        .then(topics => {
+            res.render('topics', { topics: topics, currentUser });
+   }).catch(err => {
+      console.log(err);
+   });
+});
+
+app.get("/topics/:id", function(req, res) {
+    Topic.findById(req.params.id).lean()
+	.then(post => {
+	    res.render('topics-show', { Topic: Topic })
+	})
+
+	.catch(err => {
+	    console.log(err.message);
+	});
 });

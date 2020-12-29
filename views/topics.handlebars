@@ -7,9 +7,14 @@
 </div>
 
 <a href="/topics/new">New Topic</a>
+
+
 {{#each topics}}
-
-<h2><a href="/topics/{{this._id}}">{{this.title}}</a></h2>
-<small>Topic Submitted By: {{this.author.username}}</small>
-
+<div class="forum-posts" style="border-width: 2px;">
+<h2><a href="/topicss/{{this._id}}">{{this.title}}</a></h2>
+{{{this.description}}}<br>
+<p>Submitted By: {{this.author.username}}</p>
+<small>Category :{{this.category}}</small>
+<hr>
+</div>
 {{/each}}

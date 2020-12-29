@@ -14,7 +14,7 @@
 {{#each reviews}}
 <div class="forum-posts" style="border-width: 2px;">
 <h2><a href="/reviews/{{this._id}}">{{this.title}}</a></h2>
-<small>{{this.description}}</small><br>
+{{{this.description}}}<br>
 <p>Submitted By: {{this.author.username}}</p>
 <small>Category :{{this.category}}</small>
 <hr>

@@ -1,0 +1,27 @@
+{{> navbar}}
+<div class ="container">
+<div class="col-sm-6 col-sm-offset-3">
+<h1>{{title}}</h1>
+{{{Topic.description}}}
+<p>{{Topic.author.username}}</p>
+
+
+<p><a href="/topics/{{Topic._id}}/edit">Edit</a></p>
+
+<!-- DELETE BUTTON -->
+<p><form method="POST" action="/topics/{{topic._id}}?_method=DELETE">
+<button type="submit">Delete</button>
+</form></p>
+<hr>
+
+<!-- comment form -->
+{{> comment-form}}
+<hr>
+
+<!-- Show Comments -->
+{{#each comments}}
+{{> comment}}
+{{/each}}
+
+</div>
+</div>
