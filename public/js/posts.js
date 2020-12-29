@@ -1,3 +1,33 @@
+//const CodeTool = require('@editorjs/code');
+//const editor = new EditorJS({
+//    holder: 'editorjs',
+  //  tools: {
+    //code: CodeTool,
+ // }
+//});
+const editor = new EditorJS({
+    holder: 'editorjs',
+/** 
+     * Available Tools list. 
+     * Pass Tool's class or Settings object for each Tool you want to use 
+     */
+    tools:{
+// inlineCode: {
+//      class: InlineCode,
+  //    shortcut: 'CMD+SHIFT+M',
+    //},
+       header:Header,
+       delimiter: Delimiter,
+       paragraph: {
+        class: Paragraph,
+        inlineToolbar: true,
+      },
+      embed: Embed,
+      image: SimpleImage,
+   }
+}
+);
+
 $(document).ready(function() {
   $(".vote-up").submit(function(e) {
     e.preventDefault();
@@ -90,4 +120,11 @@ myInput.onkeyup = function() {
   }
 }
 
-
+// Save data from editorjs
+function myFunction(){
+    editor.save().then((output) => {
+        console.log('Data: ', output);
+    }).catch((error) => {
+        console.log('Saving failed: ', error)
+    });
+}
