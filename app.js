@@ -14,7 +14,7 @@ const Schema = mongoose.Schema
 
 
 
-mongoose.connect('mongodb+srv://root:bPoboyXiVLO1KrrX@cluster0.yelfn.mongodb.net/mongoose?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://root:bPoboyXiVLO1KrrX@cluster0.yelfn.mongodb.net/holbieNotes?retryWrites=true&w=majority', {
     useUnifiedTopology: true
 },(err, client) =>
     {
@@ -377,3 +377,12 @@ app.get('/:category', function(req, res) {
 	});
 });
 
+// User Account
+app.get('/account/:username', function(req, res)  {
+    User.find({ username: req.params.username }).lean()
+	.then(users => {
+	    res.render("account", { users });
+	}).catch(err => {
+			    console.log(err);
+		});
+	});

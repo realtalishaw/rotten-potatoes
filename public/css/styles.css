@@ -181,8 +181,13 @@ h1 {
   border-color: gray;
   border-width: 2px;
   margin-bottom: 5px;
+  text-overflow: ellipsis;
    }
-
+  .limit {
+      max-height: 75%;
+      text-overflow: ellipsis;
+  }
+  
    .forum-posts:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 
@@ -224,3 +229,4 @@ h1 {
 }
 
 
+BB

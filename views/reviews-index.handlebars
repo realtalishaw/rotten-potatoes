@@ -15,7 +15,9 @@
 {{#each reviews}}
 <div class="forum-posts" style="border-width: 2px;">
 <h2><a href="/reviews/{{this._id}}">{{this.title}}</a></h2>
-{{{this.description}}}<br>
+<div class="limit">
+{{{this.description}}}
+</div>
 <p>Submitted By: {{this.author.username}}</p>
 <small>Category :<a href="/{{this.category}}">{{this.category}}</a></small>
 <hr>
@@ -28,8 +30,8 @@
 <div class="right">
 <button><a href="/reviews/new">Start New Discussion</a></button>
 <hr>
-<p>Advice</p>
-<p>Specializations</p>
+<a href="/Advice"><p>Advice</p></a>
+<a href="/Specializations"><p>Specializations</p></a>
 <p>Jobs</p>
 <p>C Programming</p>
 <p>Python Programming</p>

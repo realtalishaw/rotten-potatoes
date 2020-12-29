@@ -1,7 +1,8 @@
 {{> navbar}}
 <div>
-<h1>Manage Your Account{{username}}! </h1>
- <h1>EditorJS</h1>
+{{#each users}}
+<h1>Manage Your Account{{this.username}}! </h1>
+{{/each}}
 <form action="/sign-up" method="post">
  <label for="Linkedin">Linkedin</label>
                 <input type="text" id="linkedin" placeholder="Linkedin"
