@@ -1,0 +1,65 @@
+<!-- forum index -->
+<!-- forum columns -->
+<div class="row">
+  <div class="column" id="forum">
+    <button>sort</button>
+
+    <container>
+      <div class="forum-post">
+            <h2>Post Title</h2>
+            <p>Snippet from the post</p>
+            </div>
+    </container>
+  </div>
+
+ <!-- Forum Navigation Sidebar -->
+  <div class="column" id="nav">
+
+<!-- discussion post -->
+       <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="forum-buttons">Start New Discussion</button><br>
+<div id="id01" class="modal">
+  <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+  <form class="modal-content" action="/action_page.php">
+    <div class="container">
+      <h1>New Discussion Post</h1>
+      <p>💬Create a New Discussion Post by using this form.<br> Be sure to check that a post hasn't already been made with this topic!</p>
+      <hr>
+      <label for="title"><b>Post title</b></label>
+      <input type="text" placeholder="Enter Post Title" name="title" required>
+
+<!-- text editor -->
+    <div class="sample-toolbar">
+		<a href="javascript:void(0)" onclick="format('bold')"><span class="fa fa-bold fa-fw"></span></a>
+		<a href="javascript:void(0)" onclick="format('italic')"><span class="fa fa-italic fa-fw"></span></a>
+		<a href="javascript:void(0)" onclick="format('insertunorderedlist')"><span class="fa fa-list fa-fw"></span></a>
+		<a href="javascript:void(0)" onclick="setUrl()"><span class="fa fa-link fa-fw"></span></a>
+</div>
+
+<div class="editor" id="sampleeditor">
+	</div>
+
+      <div class="center">
+        <button type="submit" class="signupbtn">Post</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+    <div class="forum-nav">
+      <p>All Discussions</p>
+      <p>Favorites</p>
+      </div>
+
+  
+    <hr>
+
+    <div class="categories">
+     <span class="dot">Intros</span>
+      <p>FAQs</p>
+      <p>C Code </p>
+      <p>Betty Tips & Tricks</p>
+      <p>Mac Users</p>
+      <p>Vim Lovers</p>
+      <p>Python</p>
+  </div>
+</div>

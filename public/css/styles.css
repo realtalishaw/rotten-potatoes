@@ -3,7 +3,7 @@ input[type=text], input[type=password] {
   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
-  display: centered;
+  /*display: centered;*/
   border: none;
   background: #f1f1f1;
   border-radius: 5px;
@@ -31,20 +31,9 @@ button:hover {
   opacity:1;
 }
 
-/* Add padding to container elements */
-.container {
-    padding-top: 5%;
-    position: relative;
-} 
 
-.child {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
     
-/* Clear floats */
+/* Clear floats 
 .clearfix::after {
   content: "";
   clear: both;
@@ -53,7 +42,7 @@ button:hover {
 .clearfix {
   display: flex;
   justify-content: center;
-}
+}*/
 
 
 
@@ -75,10 +64,18 @@ h1 {
 
 .login {
   height: 50%;
-  margin: 0 auto;
+  margin-right: auto;
+  margin-left: 20%;
   border-radius: 5px;
   width: 50%;
+  padding-top: 5%;
+}
 
+.center {
+    height: 50%;
+    margin-right: auto;
+    margin-left: 20%;
+    width: 50%;
 }
 
 /* The message box is shown when the user clicks on the password field */
@@ -92,7 +89,7 @@ h1 {
 }
 
 #message p {
-  padding: 10px 35px;
+ padding: 0 35px;
   font-size: 18px;
 }
 
@@ -120,35 +117,71 @@ h1 {
 
 .sidenav {
   height: 100%;
-  width: 160px;
+  width: 150px;
   position: fixed;
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: #111;
+  background-color: #78CCD2;
   overflow-x: hidden;
   padding-top: 20px;
 }
 
 .sidenav a {
-  padding: 6px 8px 6px 16px;
+  padding: 10px 10px;
+  text-align: center; 
   text-decoration: none;
-  font-size: 25px;
-  color: #818181;
+  font-size: 20px;
+  color: gray;
   display: block;
 }
 
 .sidenav a:hover {
-  color: #f1f1f1;
+ color: #f1f1f1;
 }
 
 .main {
-  margin-left: 160px; /* Same as the width of the sidenav */
-  font-size: 28px; /* Increased text to enable scrolling */
+  margin-left: 150px; /* Same as the width of the sidenav */
   padding: 0px 10px;
 }
 
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+
+.search {
+  border-color: #96A0AA;
+  border-radius: 5px;
+  width: 100%;
 }
+
+
+ .left, .right {
+      position: fixed;
+      overflow-x: hidden;
+      padding-top: 20px;
+   }
+   .left {
+      width: 80%;
+      left: 0;
+
+
+   }
+   .right {
+       width: 20%;
+      right: 0;
+   
+   }
+.card {
+      margin-left: 180px;
+    margin-bottom: 10%;
+  box-shadow: 0 4px 8px 0  rgba(0,0.2,0,0.3);
+  transition: 0.3s;
+  width: 75%;
+  border-radius: 5px;
+  padding: 2px 16px;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+
+OB

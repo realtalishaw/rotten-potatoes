@@ -1,29 +1,46 @@
 <!-- reviews-index -->
-<div class="row">
+
 {{#if currentUser}}
-
-<h1>Reviews</h1>
-
-
-{{#each reviews}}
-<div class="col-md-3">
-<h2><a href="/reviews/{{this._id}}">{{this.title}}</a></h2>
-<small>{{this.movieTitle}}</small>
-<div><small>{{this.author.username}}</small></div>
+<div class="center">
+<input type="text" class="search" placeholder="Search the Forum">
 </div>
 
-<form class="vote-up" data-id="{{this._id}}">
-<button type="submit">Vote up</buttn>
-</form>
+<h1>Ask Holbie</h1>
+<div class="container">
 
+<div class="left">
+{{#each reviews}}
+<div class="card">
+
+
+<h2><a href="/reviews/{{this._id}}">{{this.title}}</a></h2>
+<small>{{this.movieTitle}}</small>
+<small>{{this.author.username}}</small>
+<form class="vote-up" data-id="{{this._id}}">
+<button type="submit">Vote up</button>
+<form>
 <form class="vote-down" data-id="{{this._id}}">
 <button type="submit">Vote Down</button>
 </form>
+
+</div>
 {{/each}}
+
+</div>
+
+<div class="right">
+<h1>Some random text on the right</h1>
+</div>
+
+</div>
+
+
+
+
 {{else}}
 
 	{{> login}}
 	
 {{/if}}
-</div>
+
 
