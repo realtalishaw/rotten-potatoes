@@ -14,7 +14,7 @@ const Schema = mongoose.Schema
 
 
 
-mongoose.connect('mongodb+srv://root:bPoboyXiVLO1KrrX@cluster0.yelfn.mongodb.net/holbieNotes?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://root:bPoboyXiVLO1KrrX@cluster0.yelfn.mongodb.net/mongoose?retryWrites=true&w=majority', {
     useUnifiedTopology: true
 },(err, client) =>
     {
