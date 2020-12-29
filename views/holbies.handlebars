@@ -1,20 +1,27 @@
 <!-- Members Area -->
+
 {{> navbar}}
 <h1>All The Holbies</h1>
+<div class="row">
 
-
-<div class="profile-card">
+<div class="column">
 {{#each users}}
+<div class="profile-card">
+
 <img src="/images/holbie-notes-logo.png" alt="John" style="width:100%">
 <hr>
-<h1>{{this.username}}</h1>
+<h1>{{username}}</h1>
   <p class="title">CEO & Founder, Example</p>
   <p>Harvard University</p>
   <div style="margin: 24px 0;">
-    <a href="{{this.twitter}}"><i class="fa fa-twitter"></i></a>  
-    <a href="{{this.linkedin}}"><i class="fa fa-linkedin"></i></a>  
-    <a href="{{this.github}}"><i class="fab fa-github"></i></a>
+    <a href="{{twitter}}"><i class="fa fa-twitter"></i></a>  
+    <a href="{{linkedin}}"><i class="fa fa-linkedin"></i></a>  
+    <a href="{{github}}"><i class="fab fa-github"></i></a>
   </div>
   <p><button class="profile">Contact</button></p>
+
+</div>
+</div>
+
 {{/each}}
 </div>

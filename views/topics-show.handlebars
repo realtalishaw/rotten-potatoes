@@ -2,14 +2,14 @@
 <div class ="container">
 <div class="col-sm-6 col-sm-offset-3">
 <h1>{{title}}</h1>
-{{{Topic.description}}}
-<p>{{Topic.author.username}}</p>
+{{{topics.description}}}
+<p>{{topics.author.username}}</p>
 
 
-<p><a href="/topics/{{Topic._id}}/edit">Edit</a></p>
+<p><a href="/topics/{{topics._id}}/edit">Edit</a></p>
 
 <!-- DELETE BUTTON -->
-<p><form method="POST" action="/topics/{{topic._id}}?_method=DELETE">
+<p><form method="POST" action="/topics/{{topics._id}}?_method=DELETE">
 <button type="submit">Delete</button>
 </form></p>
 <hr>

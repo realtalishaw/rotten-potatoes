@@ -343,8 +343,8 @@ app.get('/topics', (req, res) => {
 
 app.get("/topics/:id", function(req, res) {
     Topic.findById(req.params.id).lean()
-	.then(post => {
-	    res.render('topics-show', { Topic: Topic })
+	.then(topics => {
+	    res.render('topics-show', { topics: topics })
 	})
 
 	.catch(err => {
@@ -364,3 +364,16 @@ app.get('/holbies', (req, res) => {
       console.log(err);
    });
 });
+
+
+// Categories
+app.get('/:category', function(req, res) {
+    Review.find({ category: req.params.category }).lean()
+	.then(reviews => {
+	    res.render("categories-index", { reviews });
+	})
+	.catch(err => {
+	    console.log(err);
+	});
+});
+
