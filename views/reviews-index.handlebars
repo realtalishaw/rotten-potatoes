@@ -9,27 +9,21 @@
 <div class="container">
 
 <div class="left">
+<h2>Forum posts should go here</h2>
+
 {{#each reviews}}
-<div class="card">
-
-
+<div class="forum-posts" style="border-width: 2px;">
 <h2><a href="/reviews/{{this._id}}">{{this.title}}</a></h2>
 <small>{{this.movieTitle}}</small>
 <small>{{this.author.username}}</small>
-<form class="vote-up" data-id="{{this._id}}">
-<button type="submit">Vote up</button>
-<form>
-<form class="vote-down" data-id="{{this._id}}">
-<button type="submit">Vote Down</button>
-</form>
+</div>
+{{/each}}>
 
 </div>
-{{/each}}
 
-</div>
 
 <div class="right">
-<h1>Some random text on the right</h1>
+<button><a href="/reviews/new">Start New Discussion</a></button>
 </div>
 
 </div>

@@ -63,6 +63,8 @@ app.get('/login', (req, res) => {
   res.render('login');
 });
 
+
+
 app.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -97,9 +99,9 @@ app.post("/login", (req, res) => {
 
 // REVIEWS
 const Review = mongoose.model('Review', {
-    title: String,
+    topic: String,
     description: String,
-    movieTitle: String,
+    
     author: { type: Schema.Types.ObjectID, ref: "User", required: true },
     upVotes: [{ type: Schema.Types.ObjectId, ref: "User"}],
     downVotes: [{ type: Schema.Types.ObjectId, ref: "User" }],
@@ -288,4 +290,14 @@ app.put("/reviews/:id/vote-down", function(req, res) {
 
 	res.status(200);
     });
+});
+
+// TOPICS                                                                                                                                                                                                   
+app.get('/topics', (req, res) => {
+    res.render('topics');
+});
+
+// Members
+app.get('/holbies', (req, res) => {
+    res.render('holbies');
 });
