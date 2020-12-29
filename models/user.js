@@ -8,7 +8,14 @@ const UserSchema = new Schema({
     password: { type: String, select: false },
     username: { type: String, required: true },
     email: { type: String, required: true },
-    reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }]
+    reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+    profileImage:   {
+        data: Buffer,
+        contentType: String
+    },
+    linkedin: { type: String },
+    twitter: { type: String },
+    github: { type: String },
 },
     { timestamps: { createdAt: 'created_at' } }
 );
