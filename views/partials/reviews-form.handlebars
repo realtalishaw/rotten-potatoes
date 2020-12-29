@@ -1,7 +1,7 @@
 <!-- views/partials/reviews-form.handlebars -->
 
-<fieldset>
-  <legend>{{title}}</legend>
+
+  <h1>{{title}}</h1>
 
 <!-- TITLE -->
   <div class="form-group">
@@ -9,15 +9,30 @@
     <input id="review-title" type="text" name="title" value="{{review.title}}"/>
   </duv>
 
-  <!-- MOVIE TITLE -->
+  <!-- Category -->
   <div class="form-group">
-    <label for="movie-title">Movie Title</label><br>
-    <input id="movie-title" type="text" name="movieTitle" value="{{review.movieTitle}}" />
-  </div>
+    <label for="review-category">Category</label><br>
+    <select id="review-category" type="text" name="reviewCategory" value="{{review.category}}" />
+    <option value="Advice">Advice</option>
+    <option value="Specializations">Specializations</option>
+    <option value="Jobs">Jobs</option>
+    <option value="C Programming">C Programming</option>
+    <option value="Python Programming">Python Programming</option>
+    <option value="HTML/CSS/JS">HTML/CSS/JS</option>
+    <option value="Databases">Datases</option>
+    <option value="Testing">Testing</option>
+    <option value="Systems Engineering/Devops">Systems Engineering/Devops</option>
+    <option value="Servers">Servers</option>
+    <option value="Debugging">Debugging</option>
+    <option value="Soft Skills">Soft Skills</option>
+    <option value="Random">Random</option>
+  </select>
+
+</div>
 
   <!-- DESCRIPTION -->
   <div class="form-group">
     <label for="review-description">Description</label><br>
     <textarea id="review-description" name="description" rows="10" />{{review.description}}</textarea>
   </div>
-</fieldset>
+

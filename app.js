@@ -99,13 +99,21 @@ app.post("/login", (req, res) => {
 
 // REVIEWS
 const Review = mongoose.model('Review', {
-    topic: String,
+    title: String,
     description: String,
-    
+    category: String,
     author: { type: Schema.Types.ObjectID, ref: "User", required: true },
     upVotes: [{ type: Schema.Types.ObjectId, ref: "User"}],
     downVotes: [{ type: Schema.Types.ObjectId, ref: "User" }],
     voteScore : {type: Number}
+});
+
+// TOPICS
+const Topic = mongoose.model('Topic', {
+    title: { type: String, required: true },
+    description: String,
+    category: String,
+    author: { type: Schema.Types.ObjectId, ref: "User", required: true }
 });
 
 
@@ -131,7 +139,7 @@ app.listen(server_port, server_host, function() {
 
 // NEW
 app.get('/reviews/new', (req, res) => {
-    res.render('reviews-new', {title: "New Review"});
+    res.render('reviews-new', {title: "Start New Discussion"});
 })
 
 // CREATE
@@ -300,4 +308,35 @@ app.get('/topics', (req, res) => {
 // Members
 app.get('/holbies', (req, res) => {
     res.render('holbies');
+});
+
+// New Topic
+app.get('/topics/new', (req, res) => {
+    res.render('topics-new', {title: "New Holbie Notes"});
+})
+
+app.post("/topics/new", (req, res) => { if (req.user) {
+
+    var topics = new Topic(req.body);    topics.author = req.user._id;
+    topics.upVotes = [];
+    topics.downVotes = [];
+    topics.voteScore = 0;
+            topics
+            .save()
+            .then(topics => {
+                return User.findById(req.user._id);
+            })
+                .then(user => {
+                    console.log(user);
+                    user.topics.unshift(topics);
+                user.save();
+                // REDIRECT TO THE NEW POST                                                                                                                                                                 
+                res.redirect(`/topics/${topics._id}`);
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
+    } else {
+        return res.status(401); // UNAUTHORIZED                                                                                                                                                             
+    }
 });

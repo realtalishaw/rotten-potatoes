@@ -5,3 +5,11 @@
 <div class="forum-topics">
 <p>topics go here</p>
 </div>
+
+<a href="/topics/new">New Topic</a>
+{{#each topics}}
+
+<h2><a href="/topics/{{this._id}}">{{this.title}}</a></h2>
+<small>Topic Submitted By: {{this.author.username}}</small>
+
+{{/each}}
