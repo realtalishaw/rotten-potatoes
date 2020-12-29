@@ -340,3 +340,10 @@ app.post("/topics/new", (req, res) => { if (req.user) {
         return res.status(401); // UNAUTHORIZED                                                                                                                                                             
     }
 });
+
+app.get('/account/:username', (req, res) => {
+    const username = req.body.username;
+    User.findOne({ username }, "username");
+    console.log(username);
+    res.render('account', {username: username});
+});
