@@ -300,14 +300,7 @@ app.put("/reviews/:id/vote-down", function(req, res) {
     });
 });
 
-// TOPICS                                                                                                                                                                                           
-
-// Members
-app.get('/holbies', (req, res) => {
-    res.render('holbies');
-});
-
-// New Topic
+// TOPICS                                                                                                                                                    
 app.get('/topics/new', (req, res) => {
     res.render('topics-new', {title: "New Holbie Notes"});
 })
@@ -357,4 +350,17 @@ app.get("/topics/:id", function(req, res) {
 	.catch(err => {
 	    console.log(err.message);
 	});
+});
+
+
+
+// Members                                                                                                                                                    
+app.get('/holbies', (req, res) => {
+    var currentUser = req.user;
+    User.find({}).lean().populate('author')
+        .then(users => {
+            res.render('holbies', { users: users, currentUser });
+   }).catch(err => {
+      console.log(err);
+   });
 });
