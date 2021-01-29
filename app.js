@@ -14,7 +14,7 @@ const Schema = mongoose.Schema
 
 
 
-mongoose.connect('mongodb+srv://root:bPoboyXiVLO1KrrX@cluster0.yelfn.mongodb.net/holbieNotes?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://root:dko4mMYJ17lo44kM@cluster0.uortx.mongodb.net/mongoose?retryWrites=true&w=majority', {
     useUnifiedTopology: true
 },(err, client) =>
     {
@@ -226,8 +226,8 @@ app.post("/reviews/comments", (req, res) => {
                 return User.findById(req.user._id);
             })
 		    .then(user => {
-			
-                user.comments.push(comments);
+			console.log(user)
+			user.comments.unshift(comments);
 			user.save();
 			console.log(comments)
                 // REDIRECT TO THE NEW POST
@@ -295,7 +295,6 @@ app.put("/reviews/:id/vote-down", function(req, res) {
 	reviews.downVotes.push(req.user._id);
 	reviews.voteScore = reviews.voteScore - 1;
 	reviews.save();
-
 	res.status(200);
     });
 });
@@ -386,3 +385,5 @@ app.get('/account/:username', function(req, res)  {
 			    console.log(err);
 		});
 	});
+
+module.exports = app;
