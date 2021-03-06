@@ -140,6 +140,10 @@ h1 {
  color: #f1f1f1;
 }
 
+.text-holb-blue {
+  color: #78CCD2!important;
+}
+
 .main {
   margin-left: 150px; /* Same as the width of the sidenav */
   padding: 0px 10px;
@@ -227,6 +231,3 @@ h1 {
 .profile:hover, a:hover {
   opacity: 0.7;
 }
-
-
-BB

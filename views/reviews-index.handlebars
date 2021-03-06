@@ -6,46 +6,61 @@
 <input type="text" class="search" placeholder="Search the Forum">
 </div>
 
-<h1>Ask Holbie</h1>
+<h1 class="font-weight-bold mb-5">Main Forum</h1>
+
+<!-- Card list nav -->
+<div class="container mb-3">
+  <div class="row">
+    <div class="col-6 dropdown">
+      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Categories
+      </a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="/Advice">Advice</a>
+        <a class="dropdown-item" href="/Specializations">Specializations</a>
+        <a class="dropdown-item" href="/Jobs">Jobs</a>
+        <a class="dropdown-item" href="/C Programming">C Programming</a>
+        <a class="dropdown-item" href="/Python Programming">Python Programming</a>
+        <!-- This html-css-js is wrong -->
+        <a class="dropdown-item" href="/HTML-CSS-JS">HTML/CSS/JS</a>
+        <a class="dropdown-item" href="/Databases">Databases</a>
+        <a class="dropdown-item" href="/Testing">Testing</a>
+        <a class="dropdown-item" href="/Systems Engineering Devops">Systems Engineering/Devops</a>
+        <a class="dropdown-item" href="/Servers">Servers</a>
+        <a class="dropdown-item" href="/Debugging">Debugging</a>
+        <a class="dropdown-item" href="/Random">Random</a>
+      </div>
+    </div>
+    <div class="col-6 d-flex justify-content-end">
+      <a class="btn btn-danger" href="/reviews/new">Start New Discussion</a>
+    </div>
+  </div>
+  
+</div>
+  
+
 <div class="container">
-
-<div class="left">
-
-
-{{#each reviews}}
-<div class="forum-posts" style="border-width: 2px;">
-<h2><a href="/reviews/{{this._id}}">{{this.title}}</a></h2>
-<div class="limit">
-{{{this.description}}}
+  <!-- List of cards -->
+  <div class="row">
+    <div class="col-12">
+    {{#each reviews}}
+    <div class="">
+      <div class="card mb-2 px-2">
+          <h2 class="card-title">
+            <a class="" href="/reviews/{{this._id}}">{{this.title}}</a>
+          </h2>
+          <h6 class="card-subtitle mb-2 text-muted">Category: <a href="/{{this.category}}">{{this.category}}</a></h6>
+          <p class="card-text">
+          {{{this.description}}}
+          </p>
+          <p class="ml-auto">Submitted By: {{this.author.username}}</p>
+      </div>
+    </div>
+    
+    {{/each}}
+    </div>
+  </div>
 </div>
-<p>Submitted By: {{this.author.username}}</p>
-<small>Category :<a href="/{{this.category}}">{{this.category}}</a></small>
-<hr>
-</div>
-{{/each}}
-
-</div>
-
-
-<div class="right">
-<button><a href="/reviews/new">Start New Discussion</a></button>
-<hr>
-<a href="/Advice"><p>Advice</p></a>
-<a href="/Specializations"><p>Specializations</p></a>
-<p>Jobs</p>
-<p>C Programming</p>
-<p>Python Programming</p>
-<p>HTML/CSS/JS</p>
-<p>Databases</p>
-<p>Testing</p>
-<p>Systems Engineering/Devops</p>
-<p>Servers</p>
-<p>Debugging</p>
-<p>Random</p>
-</div>
-
-</div>
-
 
 
 
