@@ -15,12 +15,11 @@ const Schema = mongoose.Schema
 
 
 mongoose.connect('mongodb+srv://root:dko4mMYJ17lo44kM@cluster0.uortx.mongodb.net/mongoose?retryWrites=true&w=majority', {
-    useUnifiedTopology: true
-},(err, client) =>
-    {
-	if (err) return console.log(err)
-	console.log('Connected to Database!')
-    })
+  useUnifiedTopology: true
+}, (err, client) => {
+    if (err) return console.log(err)
+    console.log('Connected to Database!')
+  })
 
 // App setup
 const app = express()
@@ -29,11 +28,11 @@ module.exports = app;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.engine('handlebars', exphbs({
-    defaultLayout: 'main',
-    runtimeOptions: {
-	allowProtoPropertiesByDefault: true,
-	allowProtoMethodsByDefault: true,
-    },
+  defaultLayout: 'main',
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true,
+  },
 }));
 app.set('view engine', 'handlebars');
 
@@ -84,11 +83,11 @@ app.post("/login", (req, res) => {
         }
         // Create a token                                                              
         const token = jwt.sign({ _id: user._id, username: user.username }, process.env
-.SECRET, {
-          expiresIn: "60 days"
-        });
-          // Set a cookie and redirect to root                                         
-          console.log("user is: " + username);
+          .SECRET, {
+            expiresIn: "60 days"
+          });
+        // Set a cookie and redirect to root                                         
+        console.log("user is: " + username);
         res.cookie("nToken", token, { maxAge: 900000, httpOnly: true });
         res.redirect("/");
       });
@@ -100,33 +99,33 @@ app.post("/login", (req, res) => {
 
 // REVIEWS
 const Review = mongoose.model('Review', {
-    title: String,
-    description: String,
-    category: String,
-    author: { type: Schema.Types.ObjectID, ref: "User", required: true },
-    upVotes: [{ type: Schema.Types.ObjectId, ref: "User"}],
-    downVotes: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    voteScore : {type: Number}
+  title: String,
+  description: String,
+  category: String,
+  author: { type: Schema.Types.ObjectID, ref: "User", required: true },
+  upVotes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  downVotes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  voteScore: { type: Number }
 });
 
 // TOPICS
 const Topic = mongoose.model('Topic', {
-    title: { type: String, required: true },
-    description: String,
-    category: String,
-    author: { type: Schema.Types.ObjectId, ref: "User", required: true }
+  title: { type: String, required: true },
+  description: String,
+  category: String,
+  author: { type: Schema.Types.ObjectId, ref: "User", required: true }
 });
 
 
 // INDEX
 app.get('/', (req, res) => {
-    var currentUser = req.user;
-    Review.find({}).lean().populate('author')
-	.then(reviews => {
-	    res.render('reviews-index', { reviews: reviews, currentUser });
-   }).catch(err => {
+  var currentUser = req.user;
+  Review.find({}).lean().populate('author')
+    .then(reviews => {
+      res.render('reviews-index', { reviews: reviews, currentUser });
+    }).catch(err => {
       console.log(err);
-   });
+    });
 });
 
 
@@ -134,119 +133,140 @@ app.get('/', (req, res) => {
 var server_port = process.env.PORT || 3000;
 var server_host = process.env.localhost || '0.0.0.0';
 app.listen(server_port, server_host, function() {
-    console.log('Listening on port %d', server_port);
+  console.log('Listening on port %d', server_port);
 })
 
 // NEW
 app.get('/reviews/new', (req, res) => {
-    res.render('reviews-new', {title: "Start New Discussion"});
+  res.render('reviews-new', { title: "Start New Discussion" });
 })
 
 // CREATE
-app.post("/reviews/new", (req, res) => { if (req.user) {
+app.post("/reviews/new", (req, res) => {
+  if (req.user) {
 
-    var reviews = new Review(req.body);    reviews.author = req.user._id;
+    var reviews = new Review(req.body); reviews.author = req.user._id;
     reviews.upVotes = [];
     reviews.downVotes = [];
     reviews.voteScore = 0;
-            reviews
-            .save()
-            .then(reviews => {
-                return User.findById(req.user._id);
-            })
-		.then(user => {
-		    console.log(user);
-		    user.reviews.unshift(reviews);
-                user.save();
-                // REDIRECT TO THE NEW POST
-                res.redirect(`/reviews/${reviews._id}`);
-            })
-            .catch(err => {
-                console.log(err.message);
-            });
-    } else {
-        return res.status(401); // UNAUTHORIZED
-    }
+    reviews
+      .save()
+      .then(reviews => {
+        return User.findById(req.user._id);
+      })
+      .then(user => {
+        console.log(user);
+        user.reviews.unshift(reviews);
+        user.save();
+        // REDIRECT TO THE NEW POST
+        res.redirect(`/reviews/${reviews._id}`);
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  } else {
+    return res.status(401); // UNAUTHORIZED
+  }
 });
 
 // SHOW
 app.get('/reviews/:id', (req, res) => {
-    var currentUser = req.user;
-    // find review
-    Review.findById(req.params.id).lean().populate('comments').populate('author')
-	.then(review => {
-	//fetch its comments
-	Comment.find({ reviewId: req.params.id }).then(comments => {
-	    // respond with the template with both values
-	    res.render('reviews-show', { review: review, comments: comments, currentUser })
-	})
-  }).catch((err) => {
-    console.log(err.message);
-  });
+  var currentUser = req.user;
+  console.log("Current user: " + req.user);
+  // find review
+  Review.findById(req.params.id).lean().populate('comments').populate('author')
+    .then(review => {
+      var postOwner = false;
+      console.log(currentUser.username);
+      if (currentUser.username === review.author.username){
+      postOwner = true;
+       console.log("Post Owner: " + postOwner);
+      }
+      //fetch its comments
+      Comment.find({ reviewId: req.params.id }).then(comments => {
+        // respond with the template with both values
+        res.render('reviews-show', { review: review, comments: comments, currentUser, postOwner })
+      })
+    }).catch((err) => {
+      console.log(err.message);
+    });
 });
-   
+
 
 
 
 // EDIT
 app.get('/reviews/:id/edit', (req, res) => {
-    Review.findById(req.params.id, function(err, review) {
-	res.render('reviews-edit', {review: review, title: "Edit Review"});
-    })
+   var currentUser = req.user;
+  Review.findById(req.params.id).then(review => {
+      
+
+      if (currentUser._id == review.author){
+        console.log("Current user:" + currentUser._id);
+      console.log("Review: " + review.author);
+      return res.render('reviews-edit', { review: review, title: "Edit Review" });
+      
+      } 
+      
+      if (currentUser.username !== review.author.username) {
+    return res.status(401).send({ message: "Permission Denied, Go back!" });
+      }
+  });
 })
 
 // UPDATE
 app.put('/reviews/:id', (req, res) => {
-    Review.findByIdAndUpdate(req.params.id, req.body)
-	.then(review => {
-	    res.redirect(`/reviews/${review._id}`)
-	})
-	.catch(err => {
-	    console.log(err.message)
-	})
+  Review.findByIdAndUpdate(req.params.id, req.body)
+    .then(review => {
+      res.redirect(`/reviews/${review._id}`)
+    })
+    .catch(err => {
+      console.log(err.message)
+    })
 })
 
 // DELETE
-app.delete('/reviews/:id', function (req, res) {
-    console.log("DELETE review")
-    Review.findByIdAndRemove(req.params.id).then((review) => {
-	res.redirect('/');
-    }).catch((err) => {
-	console.log(err.message);
-    })
+app.delete('/reviews/:id', function(req, res) {
+  console.log("DELETE review")
+  Review.findByIdAndRemove(req.params.id).then((review) => {
+    res.redirect('/');
+  }).catch((err) => {
+    console.log(err.message);
+  })
 })
 
 // COMMENTS
 app.post("/reviews/comments", (req, res) => {
-    if (req.user) { var comments = new Comment(req.body); comments.author = req.user._id;
+  if (req.user) {
+    var comments = new Comment(req.body); comments.author = req.user._id;
 
-        comments
-            .save()
-            .then(comments => {
-                return User.findById(req.user._id);
-            })
-		    .then(user => {
-			console.log(user)
-			user.comments.unshift(comments);
-			user.save();
-			console.log(comments)
-                // REDIRECT TO THE NEW POST
-                res.redirect(`/reviews/${comments._id}`);
-            })
-            .catch(err => {
-                console.log(err.message);
-            });
-    } else {
-        return res.status(401); // UNAUTHORIZED
-    }
+    comments
+      .save()
+      .then(comments => {
+        return User.findById(req.user._id);
+      })
+      .then(user => {
+        console.log(user)
+        user.comments.unshift(comments);
+        user.save();
+        console.log(comments)
+        // REDIRECT TO THE NEW POST
+        res.redirect(`/reviews/${comments._id}`);
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  } else {
+    return res.status(401); // UNAUTHORIZED
+  }
 });
 
 
 
 
-  // SIGN UP POST
-  app.get('/sign-up', (req, res) => {
-    res.render('sign-up');
+// SIGN UP POST
+app.get('/sign-up', (req, res) => {
+  res.render('sign-up');
 })
 
 // SIGN UP POST
@@ -257,9 +277,9 @@ app.post("/sign-up", (req, res) => {
   user
     .save()
     .then(user => {
-	var token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: "60 days" });
-	res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
-	res.redirect("/");
+      var token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: "60 days" });
+      res.cookie('nToken', token, { maxAge: 900000, httpOnly: true });
+      res.redirect("/");
     })
     .catch(err => {
       console.log(err.message + process.env.SECRET);
@@ -269,8 +289,8 @@ app.post("/sign-up", (req, res) => {
 
 // LOG OUT
 app.get('/logout', (req, res) => {
-    res.clearCookie('nToken');
-    console.log("logged out");
+  res.clearCookie('nToken');
+  console.log("logged out");
   res.redirect('/');
 });
 
@@ -279,111 +299,112 @@ app.get('/logout', (req, res) => {
 // VOTING
 
 app.put("/reviews/:id/vote-up", function(req, res) {
-        var reviews = new Review(req.body);
-    Review.findById(req.params.id).exec(function(err, review) {
-	reviews.upVotes.push(req.user._id);
-	reviews.voteScore = reviews.voteScore + 1;
-	reviews.save();
+  var reviews = new Review(req.body);
+  Review.findById(req.params.id).exec(function(err, review) {
+    reviews.upVotes.push(req.user._id);
+    reviews.voteScore = reviews.voteScore + 1;
+    reviews.save();
 
-	res.status(200);
-    });
+    res.status(200);
+  });
 });
 
 app.put("/reviews/:id/vote-down", function(req, res) {
-        var reviews = new Review(req.body);
-    Review.findById(req.params.id).exec(function(err, review) {
-	reviews.downVotes.push(req.user._id);
-	reviews.voteScore = reviews.voteScore - 1;
-	reviews.save();
-	res.status(200);
-    });
+  var reviews = new Review(req.body);
+  Review.findById(req.params.id).exec(function(err, review) {
+    reviews.downVotes.push(req.user._id);
+    reviews.voteScore = reviews.voteScore - 1;
+    reviews.save();
+    res.status(200);
+  });
 });
 
 // TOPICS                                                                                                                                                    
 app.get('/topics/new', (req, res) => {
-    res.render('topics-new', {title: "New Holbie Notes"});
+  res.render('topics-new', { title: "New Holbie Notes" });
 })
 
-app.post("/topics/new", (req, res) => { if (req.user) {
-    
+app.post("/topics/new", (req, res) => {
+  if (req.user) {
+
     var topics = new Topic(req.body);
     topics.author = req.user._id;
     topics.upVotes = [];
     topics.downVotes = [];
     topics.voteScore = 0;
-            topics
-            .save()
-            .then(topics => {
-                return User.findById(req.user._id);
-            })
-                .then(user => {
-                
-                user.save();
-                // REDIRECT TO THE NEW POST                                                                                                                                                                 
-                res.redirect(`/topics/${topics._id}`);
-            })
-            .catch(err => {
-                console.log(err.message);
-            });
-    } else {
-        return res.status(401); // UNAUTHORIZED                                                                                                                                                             
-    }
+    topics
+      .save()
+      .then(topics => {
+        return User.findById(req.user._id);
+      })
+      .then(user => {
+
+        user.save();
+        // REDIRECT TO THE NEW POST                                                                                                                                                                 
+        res.redirect(`/topics/${topics._id}`);
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  } else {
+    return res.status(401); // UNAUTHORIZED                                                                                                                                                             
+  }
 });
 
 app.get('/topics', (req, res) => {
-    var currentUser = req.user;
-    Topic.find({}).lean().populate('author')
-        .then(topics => {
-            res.render('topics', { topics: topics, currentUser });
-   }).catch(err => {
+  var currentUser = req.user;
+  Topic.find({}).lean().populate('author')
+    .then(topics => {
+      res.render('topics', { topics: topics, currentUser });
+    }).catch(err => {
       console.log(err);
-   });
+    });
 });
 
 app.get("/topics/:id", function(req, res) {
-    Topic.findById(req.params.id).lean()
-	.then(topics => {
-	    res.render('topics-show', { topics: topics })
-	})
+  Topic.findById(req.params.id).lean()
+    .then(topics => {
+      res.render('topics-show', { topics: topics })
+    })
 
-	.catch(err => {
-	    console.log(err.message);
-	});
+    .catch(err => {
+      console.log(err.message);
+    });
 });
 
 
 
 // Members                                                                                                                                                    
 app.get('/holbies', (req, res) => {
-    var currentUser = req.user;
-    User.find({}).lean().populate('author')
-        .then(users => {
-            res.render('holbies', { users: users, currentUser });
-   }).catch(err => {
+  var currentUser = req.user;
+  User.find({}).lean().populate('author')
+    .then(users => {
+      res.render('holbies', { users: users, currentUser });
+    }).catch(err => {
       console.log(err);
-   });
+    });
 });
 
 
 // Categories
 app.get('/:category', function(req, res) {
-    Review.find({ category: req.params.category }).lean()
-	.then(reviews => {
-	    res.render("categories-index", { reviews });
-	})
-	.catch(err => {
-	    console.log(err);
-	});
+  Review.find({ category: req.params.category }).lean()
+    .then(reviews => {
+      res.render("categories-index", { reviews });
+    })
+    .catch(err => {
+      console.log(err);
+    });
 });
 
 // User Account
-app.get('/account/:username', function(req, res)  {
-    User.find({ username: req.params.username }).lean()
-	.then(users => {
-	    res.render("account", { users });
-	}).catch(err => {
-			    console.log(err);
-		});
-	});
+app.get('/account/:username', function(req, res) {
+  User.find({ username: req.params.username }).lean()
+    .then(users => {
+      res.render("account", { users });
+    }).catch(err => {
+      console.log(err);
+    });
+});
 
 module.exports = app;

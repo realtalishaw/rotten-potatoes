@@ -7,7 +7,7 @@
 {{{review.description}}}
 <p>{{review.author.username}}</p>
 
-
+{{#if postOwner}}
 <p><a href="/reviews/{{review._id}}/edit">Edit</a></p>
 
 <!-- DELETE BUTTON -->
@@ -15,7 +15,7 @@
 <button type="submit">Delete</button>
 </form></p>
 <hr>
-
+{{/if}}
 <!-- comment form -->
 {{> comment-form}}
 <hr>

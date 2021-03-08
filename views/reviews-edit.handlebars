@@ -4,7 +4,40 @@
 <form method="POST" action="/reviews/{{review._id}}?_method=PUT">
   <fieldset>
 
-{{> reviews-form}}
+<h1>{{title}}</h1>
+
+<!-- TITLE -->
+  <div class="form-group">
+    <label for="title" >Title</label><br>
+    <input id="title" type="text" name="title" placeholder="{{review.title}}">
+  </div>
+
+  <!-- Category -->
+  <div class="form-group">
+    <label for="category">Category</label><br>
+    <select id="category" type="text" name="category" value="category" />
+    <option value="Advice">Advice</option>
+    <option value="Specializations">Specializations</option>
+    <option value="Jobs">Jobs</option>
+    <option value="C Programming">C Programming</option>
+    <option value="Python Programming">Python Programming</option>
+    <option value="HTML/CSS/JS">HTML/CSS/JS</option>
+    <option value="Databases">Datases</option>
+    <option value="Testing">Testing</option>
+    <option value="Systems Engineering/Devops">Systems Engineering/Devops</option>
+    <option value="Servers">Servers</option>
+    <option value="Debugging">Debugging</option>
+    <option value="Soft Skills">Soft Skills</option>
+    <option value="Random">Random</option>
+  </select>
+
+</div>
+
+  <!-- DESCRIPTION -->
+  <div class="form-group">
+    <label for="description">Description</label><br>
+    <textarea id="description" name="description" rows="10" placeholder="{{review.description}}"></textarea>
+  </div>
   <!-- BUTTON -->
   <div class="form-group">
   <p>
